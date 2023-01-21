@@ -48,7 +48,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean success) {
                 if (success) {
-                    Toast.makeText(ResetPasswordActivity.this, "Link has been sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResetPasswordActivity.this, "Link has been sent",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -25,7 +25,7 @@ public class ResetPasswordViewModel extends ViewModel {
     }//!!!
 
     public void resetPassword(String email){
-        auth.sendPasswordResetEmail("gladyrandrew@gmail.com").addOnSuccessListener(new OnSuccessListener<Void>() {
+        auth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 success.setValue(true);
