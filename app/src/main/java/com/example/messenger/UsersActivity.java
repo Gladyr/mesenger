@@ -9,22 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 public class UsersActivity extends AppCompatActivity {
+
+    private static final String EXTRA_CURRENT_USER_ID = "current_id";
+    private String currentUserId;
 
     RecyclerView recyclerViewUsers;
     private UsersViewModel viewModel;
@@ -39,30 +35,27 @@ public class UsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    User value = dataSnapshot.getValue(User.class);
-                    Log.d("UserActivity", value.toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         initViews();
+        currentUserId = getIntent().getStringExtra(EXTRA_CURRENT_USER_ID);
         viewModel = new ViewModelProvider(this).get(UsersViewModel.class);
         observeViewModel();
-        recyclerViewUsers.setAdapter(usersAdapter);
+        usersAdapter.setOnUserClickListener(new UsersAdapter.OnUserClickListener() {
+            @Override
+            public void onUserClick(User user) {
+                Intent intent = ChatActivity.newIntent(
+                        UsersActivity.this,
+                        currentUserId,
+                        user.getId());
+                startActivity(intent);
+            }
+        });
+      /*  recyclerViewUsers.setAdapter(usersAdapter);*/
     }
 
     private void initViews(){
         recyclerViewUsers= findViewById(R.id.recyclerViewUsers);
         usersAdapter = new UsersAdapter();
-
+        recyclerViewUsers.setAdapter(usersAdapter);
     }
 
     private void observeViewModel(){
@@ -99,7 +92,9 @@ public class UsersActivity extends AppCompatActivity {
 
     }
 
-    public static Intent newIntent(Context context){
-        return new Intent(context, UsersActivity.class);
+    public static Intent newIntent(Context context, String currentUserId){
+        Intent intent = new Intent(context, UsersActivity.class);
+        intent.putExtra(EXTRA_CURRENT_USER_ID, currentUserId);
+        return intent;
     }
 }

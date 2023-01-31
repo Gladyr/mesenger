@@ -15,4 +15,5 @@
     <string name="your_lastname">Your LastName</string>
     <string name="your_age">Your age</string>
     <string name="my_register">REGISTER</string>
+    <string name="your_message">Your message</string>
 </resources>

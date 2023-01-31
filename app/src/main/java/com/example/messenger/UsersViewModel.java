@@ -31,21 +31,24 @@ public class UsersViewModel extends ViewModel {
     private MutableLiveData<List<User>> users = new MutableLiveData<>();
 
     public UsersViewModel() {  auth = FirebaseAuth.getInstance();
-        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    user.setValue(firebaseAuth.getCurrentUser());
-            }
-        });
+        auth.addAuthStateListener(firebaseAuth -> user.setValue(firebaseAuth.getCurrentUser()));
         firebaseDatabase = FirebaseDatabase.getInstance();
         usersReference = firebaseDatabase.getReference("Users");
         usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FirebaseUser curentUser = auth.getCurrentUser();
+                if (curentUser == null){
+                    return;
+                }
                 List<User> userFromDB = new ArrayList<>();
+
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     User user = dataSnapshot.getValue(User.class);
-                    userFromDB.add(user);
+                    assert user != null;
+                    if (!user.getId().equals(curentUser.getUid())) {
+                        userFromDB.add(user);
+                    }
                 }
                 users.setValue(userFromDB);
             }

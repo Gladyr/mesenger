@@ -37,13 +37,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupClickListener(){
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String emaill = editTextLoginEmail.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
-                viewModel.login(emaill, password);
-            }
+        buttonLogin.setOnClickListener(view -> {
+            String emaill = editTextLoginEmail.getText().toString().trim();
+            String password = editTextPassword.getText().toString().trim();
+            viewModel.login(emaill, password);
         });
         textViewForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onChanged(FirebaseUser firebaseUser) {
                 if (firebaseUser != null){
                    // Toast.makeText(LoginActivity.this, "Authorized", Toast.LENGTH_SHORT).show();
-                    Intent intent = UsersActivity.newIntent(LoginActivity.this);
+                    Intent intent = UsersActivity.newIntent(LoginActivity.this, firebaseUser.getUid());
                     startActivity(intent);
                     finish();
                 }

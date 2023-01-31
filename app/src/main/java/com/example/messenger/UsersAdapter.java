@@ -76,7 +76,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewUserInfo = itemView.findViewById(R.id.textViewUserInfo);
-            onLineStatus = itemView.findViewById(R.id.onLineStatus);
+            onLineStatus = itemView.findViewById(R.id.onLineStatusChat);
         }
     }
 }

@@ -22,7 +22,7 @@
             android:text="Andrew Gladyr, 42"/>
 
         <View
-            android:id="@+id/onLineStatus"
+            android:id="@+id/onLineStatusChat"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_margin="16dp"
